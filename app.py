@@ -10,3 +10,8 @@ from flask import Flask, request
 
 
 
+@app.route("/")
+def index():
+  return "Quer saber mais do orçamento de SP?"
+
+
