@@ -20,6 +20,8 @@ with open("credenciais.json", mode="w") as fobj:
 conta = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json")
 api = gspread.authorize(conta)
 
+app = Flask(__name__)
+
 @app.route("/")
 def index():
   return "Quer saber mais do orçamento de SP?"
