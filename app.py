@@ -36,25 +36,29 @@ def subprefeituras():
             df = pd.read_excel("basedadosexecucao0823.xlsx")
             global orcamento
             orcamento = df  # Atribua df a orcamento aqui
-        orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
-        Gastos = orc.groupby('Ds_Orgao')
-        investimento = Gastos sum()
-        investimento = investimento.reset_index()
-        novos = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
-        investimento.columns = novos
-        print(investimento)
-        investimento_por_sub = investimento[investimento['Órgão'].str.contains('Subprefeitura')]
-        pd.set_option('float_format', '{:.2f}'.format)
-        investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado'] / investimento_por_sub['Valor orçado em 2023'] * 100
-        investimento_por_sub = investimento_por_sub.sort_values('Executado', ascending=False)
-        print(investimento_por_sub)
-        planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
-        guia = planilha.worksheet("Subprefeituras")
-        data_to_append = investimento_por_sub.values.tolist()
-        data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
-        guia.clear()
-        for row in data_to_append:
-            guia.append_table(row)
-        return "Novos dados atualizados"
     else:
-        return "Últimos dados já foram atualizados"
+        print("Erro ao baixar o arquivo:", response.status_code)
+
+    orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
+    Gastos = orc.groupby('Ds_Orgao')
+    investimento = Gastos.sum()
+    investimento = investimento.reset_index()
+    novos = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
+    investimento.columns = novos
+    print(investimento)
+    investimento_por_sub = investimento[investimento['Órgão'].str.contains('Subprefeitura')]
+    pd.set_option('float_format', '{:.2f}'.format)
+    investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado'] / investimento_por_sub['Valor orçado em 2023'] * 100
+    investimento_por_sub = investimento_por_sub.sort_values('Executado', ascending=False)
+    print(investimento_por_sub)
+    planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+    guia = planilha.worksheet("Subprefeituras")
+    data_to_append = investimento_por_sub.values.tolist()
+    data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
+    guia.clear()
+    for row in data_to_append:
+        guia.append_table(row)
+    
+      return "Novos dados atualizados"
+    else:
+      return "Últimos dados já foram atualizados"
