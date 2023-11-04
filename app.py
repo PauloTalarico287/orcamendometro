@@ -22,6 +22,9 @@ api = gspread.authorize(conta)
 
 app = Flask(__name__)
 
+if __name__ == '__main__':
+    app.run()
+
 @app.route("/")
 def index():
   return "Quer saber mais do orçamento de SP?"
