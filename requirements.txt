@@ -2,6 +2,7 @@ bs4
 datetime
 flask
 gspread
+gspread_dataframe
 gunicorn
 oauth2client
 pandas
