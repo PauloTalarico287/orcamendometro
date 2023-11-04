@@ -5,6 +5,7 @@ gspread
 gspread_dataframe
 gunicorn
 oauth2client
+openpyxl
 pandas
 requests
 sendgrid
