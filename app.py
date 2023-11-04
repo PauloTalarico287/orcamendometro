@@ -26,6 +26,7 @@ app = Flask(__name__)
 def index():
   return "Quer saber mais do orçamento de SP?"
 
+orcamento = None
 def subprefeituras():
     url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
     response = requests.get(url)
