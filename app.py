@@ -31,6 +31,7 @@ def index():
 
 @app.route("/subprefeituras")
 def subprefeituras():
+    global orcamento
     orcamento = None
     url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
     response = requests.get(url)
@@ -38,8 +39,7 @@ def subprefeituras():
         with open("basedadosexecucao0823.xlsx", "wb") as f:
             f.write(response.content)
             df = pd.read_excel("basedadosexecucao0823.xlsx")
-            global orcamento
-            orcamento = df  # Atribua df a orcamento aqui
+            orcamento = df 
     else:
         print("Erro ao baixar o arquivo:", response.status_code)
 
