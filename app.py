@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 from flask import Flask, request
+from openpyxl import Workbook
+from openpyxl import load_workbook
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To, Content
 from tchan import ChannelScraper
