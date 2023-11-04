@@ -1,10 +1,17 @@
 import pandas as pd
 import requests
-from bs4 import BeautifulSoup
 import gspread
+import sendgrid
+import json
+import os
+from bs4 import BeautifulSoup
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 from flask import Flask, request
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Email, To, Content
+from tchan import ChannelScraper
+
 
 SENDGRID_KEY = os.environ["SENDGRID_KEY"]
 GOOGLE_SHEETS_CREDENTIALS = os.environ["GOOGLE_SHEETS_CREDENTIALS"]
