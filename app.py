@@ -34,10 +34,10 @@ def subprefeituras():
     with open("basedadosexecucao0823.xlsx", "wb") as f:
         f.write(response.content)
         df = pd.read_excel("basedadosexecucao0823.xlsx")
+    orcamento = df  # Atribua df a orcamento aqui
   else:
     print("Erro ao baixar o arquivo:", response.status_code)
 
-orcamento = pd.read_excel("basedadosexecucao0823.xlsx")
 orc=orcamento[['Ds_Orgao','Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano','Vl_Liquidado', 'Vl_Pago']]
 Gastos=orc.groupby('Ds_Orgao')
 investimento=Gastos.sum()
