@@ -58,7 +58,4 @@ def subprefeituras():
     guia.clear()
     for row in data_to_append:
         guia.append_table(row)
-    
-      return "Novos dados atualizados"
-    else:
-      return "Últimos dados já foram atualizados"
+    return "Novos dados atualizados"
