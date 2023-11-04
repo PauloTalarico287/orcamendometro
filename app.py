@@ -26,7 +26,7 @@ def subprefeituras():
     with open("basedadosexecucao0823.xlsx", "wb") as f:
         f.write(response.content)
       df = pd.read_excel("basedadosexecucao0823.xlsx")
-    else:
+  else:
     print("Erro ao baixar o arquivo:", response.status_code)
 
 orcamento = pd.read_excel("basedadosexecucao0823.xlsx")
