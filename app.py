@@ -7,7 +7,7 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 from flask import Flask, request
 import os  # Importar a biblioteca os para acessar variáveis de ambiente
 
-app = Flask(__name)
+app = Flask(__name__)
 
 # Obter as chaves de ambiente diretamente
 SENDGRID_KEY = os.environ.get("SENDGRID_KEY")
