@@ -5,11 +5,12 @@ from bs4 import BeautifulSoup
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 from flask import Flask, request
+from cachetools import LRUCache
 import os  # Importar a biblioteca os para acessar variáveis de ambiente
 
 app = Flask(__name__)
+data_cache = LRUCache(maxsize=100)
 
-# Obter as chaves de ambiente diretamente
 SENDGRID_KEY = os.environ.get("SENDGRID_KEY")
 GOOGLE_SHEETS_CREDENTIALS = os.environ.get("GOOGLE_SHEETS_CREDENTIALS")
 
@@ -30,7 +31,13 @@ def index():
 
 @app.route("/subprefeituras")
 def subprefeituras():
-    orcamento = obter_dados_orcamento()
+    if "orcamento" in data_cache:
+        orcamento = data_cache["orcamento"]
+    else:
+        # Se não estiver em cache, faça a raspagem de dados
+        orcamento = obter_dados_orcamento()
+        # Armazene os dados em cache para uso futuro
+        data_cache["orcamento"] = orcamento
 
     if orcamento is not None:
         orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
@@ -49,6 +56,3 @@ def subprefeituras():
         guia.insert_rows(investimento_por_sub.values.tolist(), 2)
 
     return "Novos dados atualizados"
-
-if __name__ == '__main__':
-    app.run()
