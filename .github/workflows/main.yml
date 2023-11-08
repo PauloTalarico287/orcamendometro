@@ -26,5 +26,5 @@ jobs:
 
     - name: Deploy with Gunicorn
       run: |
-        gunicorn -w 4 -b 0.0.0.0:8000 your_flask_app:app
+        gunicorn -w 4 -b 0.0.0.0:8000 app:app
       working-directory: ./your-flask-project
