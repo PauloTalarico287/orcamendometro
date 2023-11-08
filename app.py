@@ -1,58 +1,27 @@
-import pandas as pd
-import requests
+    import pandas as pd
 import gspread
-from bs4 import BeautifulSoup
 from oauth2client.service_account import ServiceAccountCredentials
-from gspread_dataframe import get_as_dataframe, set_with_dataframe
-from flask import Flask, request
-from cachetools import LRUCache
-import os  # Importar a biblioteca os para acessar variáveis de ambiente
 
-app = Flask(__name__)
-data_cache = LRUCache(maxsize=100)
-
-SENDGRID_KEY = os.environ.get("SENDGRID_KEY")
-GOOGLE_SHEETS_CREDENTIALS = os.environ.get("GOOGLE_SHEETS_CREDENTIALS")
+# Carregue as credenciais do Google Sheets
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json", scope)
+client = gspread.authorize(creds)
 
 def obter_dados_orcamento():
     url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open("basedadosexecucao0823.xlsx", "wb") as f:
-            f.write(response.content)
-        return pd.read_excel("basedadosexecucao0823.xlsx")
-    else:
-        print("Erro ao baixar o arquivo:", response.status_code)
-        return None
+    df = pd.read_excel(url)
+    return df
 
-@app.route("/")
-def index():
-    return "Quer saber mais do orçamento de SP?"
-
-@app.route("/subprefeituras")
-def subprefeituras():
-    if "orcamento" in data_cache:
-        orcamento = data_cache["orcamento"]
-    else:
-        # Se não estiver em cache, faça a raspagem de dados
-        orcamento = obter_dados_orcamento()
-        # Armazene os dados em cache para uso futuro
-        data_cache["orcamento"] = orcamento
+def atualizar_planilha_google():
+    orcamento = obter_dados_orcamento()
 
     if orcamento is not None:
-        orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
-        Gastos = orc.groupby('Ds_Orgao')
-        investimento = Gastos.sum().reset_index()
-        investimento.columns = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
+        # Realize a manipulação dos dados conforme necessário
 
-        investimento_por_sub = investimento[investimento['Órgão'].str.contains('Subprefeitura')]
-        investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado'] / investimento_por_sub['Valor orçado em 2023'] * 100
-        investimento_por_sub = investimento_por_sub.sort_values('Executado', ascending=False)
-
-        # Salvar os dados em uma planilha do Google Sheets
-        planilha = gspread.service_account(filename="credenciais.json")
-        guia = planilha.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk").worksheet("Subprefeituras")
+        planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+        guia = planilha.worksheet("Subprefeituras")
         guia.clear()
-        guia.insert_rows(investimento_por_sub.values.tolist(), 2)
+        guia.set_dataframe(orcamento, start="A2")
 
-    return "Novos dados atualizados"
+if __name__ == "__main__":
+    atualizar_planilha_google()
