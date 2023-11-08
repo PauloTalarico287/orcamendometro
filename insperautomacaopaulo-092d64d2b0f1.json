@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "insperautomacaopaulo",
+  "private_key_id": "092d64d2b0f108fe034334f01175bd2314b20017",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCnXZjn11XvPRA4\ncerLIru9HCRhvDXDS5hGFHEkpcugbd27PzNX0MpfTHPb8+UkfkphPSkg7pVsugaL\nIoe5RYqsEanDVZ1LFYWPzO5TUU4OQNk1CC05CCat59wrBTbrg7Ugi0QncH5wRW42\n927St8geDvBJn9uslMANoWlD4AbQhXvdD2VH5VFarYisAiJ/COByi4H33HGHJ5Hg\n7wJYK6lqFwVi1UCwfy51ipsT3PW2XPZ66KDPwVzIV5fNdZCn3WyTAu2yuLbVSdb+\nKx2R9sKi4G4wQOOGqFz+dDx5HN+VneTGzm7ZN+/pGTzLdh8dm/pNjsdwgLRo92Ke\nvc2KjZglAgMBAAECggEAHdY6Ua6ac9WThDSO0psFFCAlvkTC4uehpHC1gP6LsDSV\n8HFCcnfW9ClZiE9RPPHEydQQ9n2CJwl87CYCQz3KDIXzmU60hXO3RV0X6cOXYkQe\nVO15vm6dEqjAn+zEjzUCP+SECHHuII7IKMVwvOElrHImVUHJ9FjqaiOp8/9Gx7qS\nSvG9uKl5s1Ntd5Xi/1ftY0XIa5jP1eSkqfvrtQsanKaJwu6ul+kg55q+rACq59Ow\nT6TYxH6LXCs4ugt/C6cofhlLYmXPJQPzrVnITMrTimVnKaJIfiOExBBB1aoiKdOZ\n0P3qg22C07y0wkoiJ1iq4dQiefGkMhuentkrNefvgQKBgQDe0O55B/NGLoeYlY1P\n++it4Ko4vLh0g60jKRTEIGrpJiyOMcuJIJE7Io26p7tomSO0Z7ygfQ4Nq6l1xeuy\nHGvdrTIvDNqb2txGH260dn8Ht56MpXlXe0hrb88prkYVtwJJaBrKTzOfo//5DFFG\nmPagxFZeZa0Bef3Di53r7hAS5QKBgQDASpBe6ddINegnFau1SdzFhi/HYzuqN6va\nH9HKxKsT0XhdXqtbD9eruV1jvfN+7T83BjrWTP8lo+zxnFgHvAyZVTHmR/lDcPGc\nGpkvWP3f20CerdxOH/416FO4HUfgUYmXvdig+JSX76ey4W0qQivNlsh1h6y0cJ3z\nYQBv94zcQQKBgD6u3nfUIb9bta/aWs/mmXXZH2ooxWeZ56pdk0b9q7X9lElIfu8L\n52+Qb/jT2Sg69M165ZjstXhpE5pbXMxVrI7He7e60QFJl/BuRVGliGUeZg9BOhq/\nRwdahBhAu9y+CHmoPOkvUOGXXJquuWq3+6IMuhOCXSJuNFK/w2StK351AoGANyJq\nCLzVvF+wg9xj0mQuR/h0pJ/gUKsLvEwZVCFVyCXsdCEb0s1VEmjgzSN+uKr/0CAa\nKK4FDl7VJmWkm/sgRaq21wdWAi9VJ2Q8/eVvTYtJGPZSz5e+xOgrcQP8QuY+JGML\nxQPhXzsZA2I9cbttYdJVAdX3//i2YT0z6ea53cECgYB+r6NVf8FHgV5EY+/gBUx6\nMC8XumxdVjevMzEjcnutQBKsFAE5ufUAMaroGarzM5w4LgW/xmVDKJfUsbM2mN0s\nJVNmP20Jh81BOCYXRNIk9CwPCHqVnVPX73sUyTvzsb8yUr4ZAbAoM9jIXCJODBRz\nkxl4f3yMIe1kC8ScCj3E3Q==\n-----END PRIVATE KEY-----\n",
+  "client_email": "aula-google-sheets@insperautomacaopaulo.iam.gserviceaccount.com",
+  "client_id": "118256359572762301266",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/aula-google-sheets%40insperautomacaopaulo.iam.gserviceaccount.com"
+}
