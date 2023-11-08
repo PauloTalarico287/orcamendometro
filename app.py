@@ -16,12 +16,19 @@ def atualizar_planilha_google():
     orcamento = obter_dados_orcamento()
 
     if orcamento is not None:
-        # Realize a manipulação dos dados conforme necessário
-
-        planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
-        guia = planilha.worksheet("Subprefeituras")
+        orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
+        Gastos = orc.groupby('Ds_Orgao')
+        investimento = Gastos.sum().reset_index()
+        investimento.columns = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
+        investimento_por_sub = investimento[investimento['Órgão'].str.contains('Subprefeitura')]
+        investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado'] / investimento_por_sub['Valor orçado em 2023'] * 100
+        investimento_por_sub = investimento_por_sub.sort_values('Executado', ascending=False)
+        planilha = gspread.service_account(filename="credenciais.json")
+        guia = planilha.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk").worksheet("Subprefeituras")
         guia.clear()
-        guia.set_dataframe(orcamento, start="A2")
+        guia.insert_rows(investimento_por_sub.values.tolist(), 2)
+
+        # Realize a manipulação dos dados conforme necessário
 
 if __name__ == "__main__":
     atualizar_planilha_google()
