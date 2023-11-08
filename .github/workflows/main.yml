@@ -1,0 +1,30 @@
+name: Deploy Flask App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      working-directory: ./your-flask-project
+
+    - name: Deploy with Gunicorn
+      run: |
+        gunicorn -w 4 -b 0.0.0.0:8000 your_flask_app:app
+      working-directory: ./your-flask-project
