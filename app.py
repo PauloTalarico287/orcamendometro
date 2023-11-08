@@ -4,7 +4,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 # Carregue as credenciais do Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("orcamendometro
+/insperautomacaopaulo-092d64d2b0f1.json", scope)
 client = gspread.authorize(creds)
 
 def obter_dados_orcamento():
