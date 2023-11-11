@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2.4.4  # Versão mais recente que suporta Node.js 16
+        uses: actions/checkout@v2  # Usa a versão mais recente
 
       - name: Set up Python
-        uses: actions/setup-python@v2.4.2  # Versão mais recente que suporta Node.js 16
+        uses: actions/setup-python@v2  # Usa a versão mais recente
         with:
           python-version: 3.x
 
