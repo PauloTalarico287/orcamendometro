@@ -1,8 +1,8 @@
 import pandas as pd
 import gspread
-import os
 from decouple import config
 from oauth2client.service_account import ServiceAccountCredentials
+import os
 
 # Carregue as credenciais do Google Sheets do ambiente
 json_key_path = config('GOOGLE_SHEETS_JSON_KEY_PATH', default=os.getenv('GOOGLE_SHEETS_JSON_KEY_PATH'))
@@ -10,11 +10,6 @@ spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOO
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_name(json_key_path, scope)
-client = gspread.authorize(creds)
-
-# Carregue as credenciais do Google Sheets
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("orcamendometro/insperautomacaopaulo-092d64d2b0f1.json", scope)
 client = gspread.authorize(creds)
 
 def obter_dados_orcamento():
@@ -33,8 +28,10 @@ def atualizar_planilha_google():
         investimento_por_sub = investimento[investimento['Órgão'].str.contains('Subprefeitura')]
         investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado'] / investimento_por_sub['Valor orçado em 2023'] * 100
         investimento_por_sub = investimento_por_sub.sort_values('Executado', ascending=False)
-        planilha = gspread.service_account(filename="credenciais.json")
-        guia = planilha.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk").worksheet("Subprefeituras")
+        
+        # Use as credenciais carregadas anteriormente
+        planilha = client
+        guia = planilha.open_by_key(spreadsheet_key).worksheet("Subprefeituras")
         guia.clear()
         guia.insert_rows(investimento_por_sub.values.tolist(), 2)
 
