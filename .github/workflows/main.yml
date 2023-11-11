@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Python script
-        run: python your_script.py
+        run: python app.py
         env:
           GOOGLE_SHEETS_JSON_KEY_PATH: ${{ secrets.GOOGLE_SHEETS_JSON_KEY_PATH }}
           GOOGLE_SHEETS_SPREADSHEET_KEY: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_KEY }}
