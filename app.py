@@ -1,6 +1,16 @@
 import pandas as pd
 import gspread
+import os
+from decouple import config
 from oauth2client.service_account import ServiceAccountCredentials
+
+# Carregue as credenciais do Google Sheets do ambiente
+json_key_path = config('GOOGLE_SHEETS_JSON_KEY_PATH', default=os.getenv('GOOGLE_SHEETS_JSON_KEY_PATH'))
+spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
+
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name(json_key_path, scope)
+client = gspread.authorize(creds)
 
 # Carregue as credenciais do Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
