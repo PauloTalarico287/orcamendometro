@@ -17,9 +17,11 @@ def obter_dados_orcamento():
     return df
 
 def atualizar_planilha_google():
+    print("Iniciando atualização da planilha.")
     orcamento = obter_dados_orcamento()
 
     if orcamento is not None:
+        print("Dados do orçamento obtidos com sucesso.")
         orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
         Gastos = orc.groupby('Ds_Orgao')
         investimento = Gastos.sum().reset_index()
