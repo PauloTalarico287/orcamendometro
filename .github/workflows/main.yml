@@ -29,5 +29,5 @@ jobs:
       - name: Run Python script
         run: python app.py
         env:
-          GOOGLE_SHEETS_JSON_KEY_PATH: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           GOOGLE_SHEETS_SPREADSHEET_KEY: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_KEY }}
