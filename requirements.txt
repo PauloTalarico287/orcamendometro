@@ -7,7 +7,7 @@ gunicorn
 oauth2client
 openpyxl
 pandas
-python-decouple
+python-decouple==3.5
 requests
 sendgrid
 tchan
