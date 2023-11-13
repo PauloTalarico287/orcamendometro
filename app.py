@@ -4,7 +4,7 @@ from decouple import config
 from oauth2client.service_account import ServiceAccountCredentials
 import os
 
-json_key_path = config('GOOGLE_SHEETS_CREDENTIALS', default=os.getenv('GOOGLE_SHEETS_CREDENTIALS'))
+json_key_path = config('GOOGLE_SHEETS_CREDENTIALS', default='credenciais.json')
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
