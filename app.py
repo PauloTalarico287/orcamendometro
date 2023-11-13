@@ -11,8 +11,8 @@ spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOO
 # Defina o escopo corretamente
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-# Use o conteúdo diretamente como o caminho para ServiceAccountCredentials
-creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_json_content, scope)
+# Use o conteúdo diretamente como ServiceAccountCredentials
+creds = ServiceAccountCredentials.from_json_keyfile_dict(json_credentials_dict=credentials_json_content, scope=scope)
 client = gspread.authorize(creds)
 
 def obter_dados_orcamento():
