@@ -4,11 +4,12 @@ from decouple import config
 from oauth2client.service_account import ServiceAccountCredentials
 import os
 
+# Obtenha o conteúdo do secret GOOGLE_SHEETS_CREDENTIALS diretamente como uma string
 credentials_json_content = os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}')
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name(json_key_path, scope)
+# Use o conteúdo diretamente como o caminho para ServiceAccountCredentials
+creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_json_content, scope)
 client = gspread.authorize(creds)
 
 def obter_dados_orcamento():
