@@ -13,7 +13,11 @@ spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOO
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 # Carregue as credenciais diretamente do conteúdo JSON
-credentials_info = json.loads(credentials_json_content)
+try:
+    credentials_info = json.loads(credentials_json_content)
+except json.decoder.JSONDecodeError:
+    print("Erro ao carregar as credenciais JSON. Certifique-se de que o conteúdo é um JSON válido.")
+    exit(1)
 
 # Use as credenciais corretas
 creds = ServiceAccountCredentials.from_service_account_info(credentials_info, scope)
