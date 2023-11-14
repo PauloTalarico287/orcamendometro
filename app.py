@@ -5,6 +5,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 import os
 import json
 
+print("Conteúdo do GOOGLE_SHEETS_CREDENTIALS:", os.getenv('GOOGLE_SHEETS_CREDENTIALS'))
+
 # Obtenha o conteúdo do secret GOOGLE_SHEETS_CREDENTIALS diretamente como uma string
 credentials_json_content = os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}')
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
