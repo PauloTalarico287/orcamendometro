@@ -1,0 +1,20 @@
+name: Manual Workflow with Secret
+​
+on:
+  workflow_dispatch:
+​
+jobs:
+  use-secret:
+    runs-on: ubuntu-latest
+​
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+​
+      - name: Use Secret
+        run: |
+          echo "Using the secret: ${{ secrets.credentials }}"
+
+      - name: Use Secret Google
+        run: |
+          echo "GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}"    
