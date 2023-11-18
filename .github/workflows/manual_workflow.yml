@@ -14,3 +14,7 @@ jobs:
       - name: Use Secret
         run: |
           echo "Using the secret: ${{ secrets.credentials }}"
+
+      - name: Use Secret Google
+        run: |
+          echo "GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}"
