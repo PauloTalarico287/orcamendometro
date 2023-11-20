@@ -1,6 +1,9 @@
 import pandas as pd
 import gspread
 from decouple import config
+from google.auth import exceptions
+from google.auth.transport.requests import Request
+from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
 import os
 import json
@@ -19,9 +22,19 @@ except json.decoder.JSONDecodeError:
     print("Erro ao carregar as credenciais JSON. Certifique-se de que o conteúdo é um JSON válido.")
     exit(1)
 
-# Use as credenciais corretas
-creds = ServiceAccountCredentials.from_service_account_info(credentials_info, scope)
-client = gspread.authorize(creds)
+try:
+    creds = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
+except exceptions.DefaultCredentialsError:
+    creds = None
+
+if not creds or not creds.valid:
+    if creds and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+    else:
+        print("Credenciais ausentes ou inválidas. Realize a autenticação interativa.")
+        exit(1)
+
+planilha = gspread.authorize(creds)
 
 def obter_dados_orcamento():
     url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
