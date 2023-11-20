@@ -8,7 +8,6 @@ import json
 # Obtenha o conteúdo do secret GOOGLE_SHEETS_CREDENTIALS diretamente como uma string
 credentials_json_content = os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}')
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
-print("Conteúdo do GOOGLE_SHEETS_CREDENTIALS:", credentials_json_content)
 
 # Defina o escopo corretamente
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
