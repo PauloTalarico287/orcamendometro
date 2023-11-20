@@ -3,7 +3,7 @@ datetime
 flask
 gspread==4.0.1
 google-auth==2.6.0
-google-auth-oauthlib==0.4.7
+google-auth-oauthlib
 google-auth-httplib2==0.1.0
 gspread_dataframe
 gunicorn
