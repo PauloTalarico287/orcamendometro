@@ -20,8 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
-
+          python-version: 3.x  # Substitua pela versão específica do seu projeto, se necessário
 
       - name: Install dependencies
         run: |
@@ -30,7 +29,9 @@ jobs:
           pip install python-decouple
 
       - name: Run Python script
-        run: python app.py
+        run: |
+          echo "Iniciando GitHub Actions Workflow"
+          python app.py
         env:
           GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
           GOOGLE_SHEETS_SPREADSHEET_KEY: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_KEY }}
