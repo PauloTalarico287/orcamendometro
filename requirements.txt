@@ -1,3 +1,4 @@
+python3-distutils
 bs4
 datetime
 flask
@@ -10,7 +11,3 @@ gunicorn
 oauth2client
 openpyxl
 pandas==1.3.3
-python-decouple==3.5
-requests
-sendgrid
-tchan
