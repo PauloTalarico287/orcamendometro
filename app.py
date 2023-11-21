@@ -5,6 +5,7 @@ import gspread
 import gspread
 import os
 from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
@@ -33,9 +34,11 @@ investimento.sort_values('Vl_Liquidado', ascending=False)
 investimento = investimento.reset_index()
 novos = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
 investimento.columns = novos
+credentials = json.loads(os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}'))
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}')
-client = gspread.authorize(credentials)
+credentials = service_account.Credentials.from_service_account_info(credentials, scopes=scope)
+client = gspread.Client(credentials=credentials)
+
 
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
