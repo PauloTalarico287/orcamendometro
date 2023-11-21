@@ -47,7 +47,7 @@ pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado']/investimento_por_sub['Valor orçado em 2023']*100
 investimento_por_sub.sort_values('Executado', ascending=False)
 investimento_por_sub
-planilha = client.open_by_key(spreadsheet_key)
+planilha = gc.open_by_key(spreadsheet_key)
 guia = planilha.worksheet("Subprefeituras")
 data_to_append = investimento_por_sub.values.tolist()
 data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
