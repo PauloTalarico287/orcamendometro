@@ -1,68 +1,53 @@
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 import gspread
-import distutils
-from decouple import config
-from google.auth import exceptions
-from google.auth.transport.requests import Request
-from google.oauth2 import service_account
+!pip install gspread oauth2client
+import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import os
-import json
+from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
-# Obtenha o conteúdo do secret GOOGLE_SHEETS_CREDENTIALS diretamente como uma string
-credentials_json_content = os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}')
+url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
+response = requests.get(url)
+
+# Verifique se a solicitação foi bem-sucedida
+if response.status_code == 200:
+    # Salve o conteúdo do arquivo em um arquivo local
+    with open("basedadosexecucao0823.xlsx", "wb") as f:
+        f.write(response.content)
+
+    # Leia o arquivo Excel usando o pandas
+    df = pd.read_excel("basedadosexecucao0823.xlsx")
+
+    # Agora você pode trabalhar com os dados em 'df'
+    print(df.head())
+
+else:
+    print("Erro ao baixar o arquivo:", response.status_code)
+
+orcamento = pd.read_excel("basedadosexecucao0823.xlsx")
+orc=orcamento[['Ds_Orgao','Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano','Vl_Liquidado', 'Vl_Pago']]
+Gastos=orc.groupby('Ds_Orgao')
+investimento=Gastos.sum()
+investimento.sort_values('Vl_Liquidado', ascending=False)
+investimento = investimento.reset_index()
+novos = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
+investimento.columns = novos
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+credentials = os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}')
+client = gspread.authorize(credentials)
+
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
-# Defina o escopo corretamente
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+investimento_por_sub=investimento[investimento['Órgão'].str.contains('Subprefeitura')]
+pd.set_option('float_format', '{:.2f}'.format)
+investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado']/investimento_por_sub['Valor orçado em 2023']*100
+investimento_por_sub.sort_values('Executado', ascending=False)
+investimento_por_sub
+planilha = client.open_by_key(spreadsheet_key)
+guia = planilha.worksheet("Subprefeituras")
+data_to_append = investimento_por_sub.values.tolist()
+data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
 
-# Carregue as credenciais diretamente do conteúdo JSON
-try:
-    credentials_info = json.loads(credentials_json_content)
-except json.decoder.JSONDecodeError:
-    print("Erro ao carregar as credenciais JSON. Certifique-se de que o conteúdo é um JSON válido.")
-    exit(1)
-
-try:
-    creds = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
-except exceptions.DefaultCredentialsError:
-    creds = None
-
-if not creds or not creds.valid:
-    if creds and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
-    else:
-        print("Credenciais ausentes ou inválidas. Realize a autenticação interativa.")
-        exit(1)
-
-planilha = gspread.authorize(creds)
-
-def obter_dados_orcamento():
-    url = "http://dados.prefeitura.sp.gov.br/dataset/7c34e3cc-e978-4810-a834-f8172c6ef81d/resource/cf3e5d80-8976-4d14-b139-4c820d6e9d35/download/basedadosexecucao0823.xlsx"
-    df = pd.read_excel(url)
-    return df
-
-def atualizar_planilha_google():
-    print("Iniciando atualização da planilha.")
-    orcamento = obter_dados_orcamento()
-
-    if orcamento is not None:
-        print("Dados do orçamento obtidos com sucesso.")
-        orc = orcamento[['Ds_Orgao', 'Ds_Programa', 'Ds_Projeto_Atividade', 'Vl_Orcado_Ano', 'Vl_Liquidado', 'Vl_Pago']]
-        Gastos = orc.groupby('Ds_Orgao')
-        investimento = Gastos.sum().reset_index()
-        investimento.columns = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
-        investimento_por_sub = investimento[investimento['Órgão'].str.contains('Subprefeitura')]
-        investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado'] / investimento_por_sub['Valor orçado em 2023'] * 100
-        investimento_por_sub = investimento_por_sub.sort_values('Executado', ascending=False)
-        
-        # Use as credenciais carregadas anteriormente
-        planilha = client
-        guia = planilha.open_by_key(spreadsheet_key).worksheet("Subprefeituras")
-        guia.clear()
-        guia.insert_rows(investimento_por_sub.values.tolist(), 2)
-
-        # Realize a manipulação dos dados conforme necessário
-
-if __name__ == "__main__":
-    atualizar_planilha_google()
+guia.clear()
+guia.update(data_to_append, 2)
