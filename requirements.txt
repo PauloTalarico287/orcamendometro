@@ -1,6 +1,5 @@
 bs4
 datetime
-distutils
 flask
 gspread==4.0.1
 google-auth==2.6.0
