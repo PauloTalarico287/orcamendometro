@@ -40,7 +40,7 @@ scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 credentials = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
 gc = gspread.authorize(credentials)
 
-spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
+spreadsheet_key = os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
 investimento_por_sub=investimento[investimento['Órgão'].str.contains('Subprefeitura')]
 pd.set_option('float_format', '{:.2f}'.format)
