@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import gspread
 import gspread
+import os
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
