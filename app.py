@@ -38,7 +38,7 @@ investimento.columns = novos
 credentials_info = json.loads(os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}'))
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 credentials = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
-gc = gspread.service_account(credentials=credentials)
+gc = gspread.authorize(credentials)
 
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
