@@ -35,11 +35,10 @@ investimento.sort_values('Vl_Liquidado', ascending=False)
 investimento = investimento.reset_index()
 novos = ['Órgão', 'Valor orçado em 2023', 'Valor Liquidado', 'Valor Pago']
 investimento.columns = novos
-credentials = json.loads(os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}'))
+credentials_info = json.loads(os.getenv('GOOGLE_SHEETS_CREDENTIALS', default='{}'))
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = service_account.Credentials.from_service_account_info(credentials, scopes=scope)
-client = gspread.Client(credentials=credentials)
-
+credentials = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
+client = gspread.service_account(credentials=credentials)
 
 spreadsheet_key = config('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
