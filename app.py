@@ -54,3 +54,15 @@ data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
 
 guia.clear()
 guia.update(data_to_append, 2)
+
+investimento_por_sec=investimento[investimento['Órgão'].str.contains('Secretaria')]
+pd.set_option('float_format', '{:.2f}'.format)
+investimento_por_sec['Executado'] = investimento_por_sec['Valor Liquidado']/investimento_por_sec['Valor orçado em 2023']*100
+investimento_por_sec.sort_values('Executado', ascending=False)
+planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+guia2 = planilha.worksheet("Secretarias")
+data_to_append2 = investimento_por_sec.values.tolist()
+data_to_append2 = [investimento_por_sec.columns.tolist()] + data_to_append2
+
+guia2.clear()
+guia2.update(data_to_append2, 2)
