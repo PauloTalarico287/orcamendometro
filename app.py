@@ -95,7 +95,7 @@ geral = pd.DataFrame({
     'Executado': [(total_por_coluna['Valor Liquidado'] / total_por_coluna['Valor orçado em 2023']) * 100],
 })
 
-planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+planilha = gc.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
 guia2 = planilha.worksheet("Geral")
 
 # Atualizando a fórmula de execução na célula correspondente
