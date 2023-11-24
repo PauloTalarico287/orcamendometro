@@ -42,6 +42,7 @@ gc = gspread.authorize(credentials)
 
 spreadsheet_key = os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY'))
 
+#SUBPREFEITURAS
 investimento_por_sub=investimento[investimento['Órgão'].str.contains('Subprefeitura')]
 pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado']/investimento_por_sub['Valor orçado em 2023']*100
@@ -55,7 +56,8 @@ data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
 guia.clear()
 guia.update(data_to_append, 2)
 
-investimento_por_sec=investimento[investimento['Órgão'].str.contains('Secretaria')]
+#SECRETARIAS
+investimento_por_sec = investimento[investimento['Órgão'].str.contains('Secretaria') & ~investimento['Órgão'].str.contains('Secretaria Municipal das Subprefeituras')]
 pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_sec['Executado'] = investimento_por_sec['Valor Liquidado']/investimento_por_sec['Valor orçado em 2023']*100
 investimento_por_sec.sort_values('Executado', ascending=False)
@@ -67,6 +69,7 @@ data_to_append2 = [investimento_por_sec.columns.tolist()] + data_to_append2
 guia2.clear()
 guia2.update(data_to_append2, 2)
 
+#OUTROS_ORGAOS
 investimento_por_outros=investimento[~investimento['Órgão'].str.contains('Subprefeitura|Secretaria')]
 pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_outros['Executado'] = investimento_por_outros['Valor Liquidado']/investimento_por_outros['Valor orçado em 2023']*100
