@@ -59,7 +59,7 @@ investimento_por_sec=investimento[investimento['Órgão'].str.contains('Secretar
 pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_sec['Executado'] = investimento_por_sec['Valor Liquidado']/investimento_por_sec['Valor orçado em 2023']*100
 investimento_por_sec.sort_values('Executado', ascending=False)
-planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+planilha = gc.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
 guia2 = planilha.worksheet("Secretarias")
 data_to_append2 = investimento_por_sec.values.tolist()
 data_to_append2 = [investimento_por_sec.columns.tolist()] + data_to_append2
