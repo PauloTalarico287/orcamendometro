@@ -84,3 +84,26 @@ data_to_append3 = [investimento_por_outros.columns.tolist()] + data_to_append3
 
 guia3.clear()
 guia3.update(data_to_append3, 2)
+
+#TOTAL
+total_por_coluna = investimento.sum()
+pd.set_option('float_format', '{:.2f}'.format)
+geral = pd.DataFrame({
+    'Categoria': ['Total'],
+    'Valor orçado em 2023': total_por_coluna['Valor orçado em 2023'],
+    'Valor Liquidado': total_por_coluna['Valor Liquidado'],
+    'Executado': [(total_por_coluna['Valor Liquidado'] / total_por_coluna['Valor orçado em 2023']) * 100],
+})
+
+planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+guia2 = planilha.worksheet("Geral")
+
+# Atualizando a fórmula de execução na célula correspondente
+linha_inicial = 2  # Pode ser ajustada conforme necessário
+#guia2.update_acell('D1', '=(C{} / B{}) * 100'.format(linha_inicial, linha_inicial))
+
+# Atualizando as células com os valores mais recentes
+guia2.update('A2', geral['Categoria'].tolist()[0])  # Acessando o primeiro elemento da lista
+guia2.update('B2', geral['Valor orçado em 2023'].tolist()[0])
+guia2.update('C2', geral['Valor Liquidado'].tolist()[0])
+guia2.update('D2', geral['Executado'].tolist()[0])
