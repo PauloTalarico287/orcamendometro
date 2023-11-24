@@ -66,3 +66,18 @@ data_to_append2 = [investimento_por_sec.columns.tolist()] + data_to_append2
 
 guia2.clear()
 guia2.update(data_to_append2, 2)
+
+investimento_por_outros=investimento[~investimento['Órgão'].str.contains('Subprefeitura|Secretaria')]
+pd.set_option('float_format', '{:.2f}'.format)
+investimento_por_outros['Executado'] = investimento_por_outros['Valor Liquidado']/investimento_por_outros['Valor orçado em 2023']*100
+investimento_por_outros.sort_values('Executado', ascending=False)
+investimento_por_outros
+planilha = gc.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+guia3 = planilha.worksheet("Outros")
+#data_to_append = investimento_por_sub.values.tolist()
+#guia.update(data_to_append)
+data_to_append3 = investimento_por_outros.values.tolist()
+data_to_append3 = [investimento_por_outros.columns.tolist()] + data_to_append3
+
+guia3.clear()
+guia3.update(data_to_append3, 2)
