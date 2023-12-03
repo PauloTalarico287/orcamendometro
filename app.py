@@ -44,6 +44,7 @@ spreadsheet_key = os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('
 
 #SUBPREFEITURAS
 investimento_por_sub=investimento[investimento['Órgão'].str.contains('Subprefeitura')]
+investimento_por_sub = investimento_por_sub.query('Órgão != "Secretaria Municipal das Subprefeituras"')
 pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_sub
 nomes_existentes = [
