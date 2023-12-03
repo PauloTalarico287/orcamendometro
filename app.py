@@ -45,17 +45,92 @@ spreadsheet_key = os.getenv('GOOGLE_SHEETS_SPREADSHEET_KEY', default=os.getenv('
 #SUBPREFEITURAS
 investimento_por_sub=investimento[investimento['Órgão'].str.contains('Subprefeitura')]
 pd.set_option('float_format', '{:.2f}'.format)
+investimento_por_sub
+nomes_existentes = [
+    "Subprefeitura Aricanduva/Formosa/Carrão",
+    "Subprefeitura Butantã",
+    "Subprefeitura Campo Limpo",
+    "Subprefeitura Capela do Socorro",
+    "Subprefeitura Casa Verde/Cachoeirinha",
+    "Subprefeitura Cidade Ademar",
+    "Subprefeitura Cidade Tiradentes",
+    "Subprefeitura Ermelino Matarazzo",
+    "Subprefeitura Freguesia/Brasilândia",
+    "Subprefeitura Ipiranga",
+    "Subprefeitura Itaim Paulista",
+    "Subprefeitura Itaquera",
+    "Subprefeitura Jabaquara",
+    "Subprefeitura Jaçanã/Tremembé",
+    "Subprefeitura Lapa",
+    "Subprefeitura M'Boi Mirim",
+    "Subprefeitura Mooca",
+    "Subprefeitura Parelheiros",
+    "Subprefeitura Penha",
+    "Subprefeitura Perus/Anhanguera",
+    "Subprefeitura Pinheiros",
+    "Subprefeitura Pirituba/Jaraguá",
+    "Subprefeitura Santana/Tucuruvi",
+    "Subprefeitura Santo Amaro",
+    "Subprefeitura Sapopemba",
+    "Subprefeitura São Mateus",
+    "Subprefeitura São Miguel Paulista",
+    "Subprefeitura Sé",
+    "Subprefeitura Vila Maria/Vila Guilherme",
+    "Subprefeitura Vila Mariana",
+    "Subprefeitura de Guaianases",
+    "Subprefeitura de Vila Prudente"
+]
+novos_nomes = [
+    "Aricanduva/Vila Formosa",
+    "Butantã",
+    "Campo Limpo",
+    "Capela do Socorro",
+    "Casa Verde",
+    "Cidade Ademar",
+    "Cidade Tiradentes",
+    "Ermelino Matarazzo",
+    "Vila Prudente",
+    "Freguesia do Ó/Brasilândia",
+    "Guaianazes",
+    "Ipiranga",
+    "Itaim Paulista",
+    "Itaquera",
+    "Jabaquara",
+    "Jaçanã/Tremembé",
+    "Lapa",
+    "M'Boi Mirim",
+    "Mooca",
+    "Parelheiros",
+    "Penha",
+    "Perus",
+    "Pinheiros",
+    "Pirituba/Jaraguá",
+    "Santana/Tucuruvi",
+    "Santo Amaro",
+    "São Mateus",
+    "São Miguel",
+    "Sapopemba",
+    "Sé",
+    "Vila Maria/Vila Guilherme",
+    "Vila Mariana",
+    "Guaianases",
+    "Vila Prudente"
+]
+mapeamento_nomes = dict(zip(nomes_existentes, novos_nomes))
+investimento_por_sub['Órgão'] = investimento_por_sub['Órgão'].replace(mapeamento_nomes)
 investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado']/investimento_por_sub['Valor orçado em 2023']*100
 investimento_por_sub.sort_values('Executado', ascending=False)
+#investimento_por_sub.to_csv('Execução_Orçamento_Subprefeituras.csv')
 investimento_por_sub
-planilha = gc.open_by_key(spreadsheet_key)
+planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
 guia = planilha.worksheet("Subprefeituras")
+#data_to_append = investimento_por_sub.values.tolist()
+#guia.update(data_to_append)
 data_to_append = investimento_por_sub.values.tolist()
 data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
 
 guia.clear()
 guia.update(data_to_append, 2)
-
 #SECRETARIAS
 investimento_por_sec = investimento[investimento['Órgão'].str.contains('Secretaria') & ~investimento['Órgão'].str.contains('Secretaria Municipal das Subprefeituras')]
 pd.set_option('float_format', '{:.2f}'.format)
