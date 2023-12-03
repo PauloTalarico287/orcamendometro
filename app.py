@@ -131,7 +131,7 @@ data_to_append = [investimento_por_sub.columns.tolist()] + data_to_append
 guia.clear()
 guia.update(data_to_append, 2)
 #SECRETARIAS
-investimento_por_sec = investimento[investimento['Órgão'].str.contains('Secretaria') & ~investimento['Órgão'].str.contains('Secretaria Municipal das Subprefeituras')]
+investimento_por_sec = investimento[investimento['Órgão'].str.contains('Secretaria')] 
 pd.set_option('float_format', '{:.2f}'.format)
 investimento_por_sec['Executado'] = investimento_por_sec['Valor Liquidado']/investimento_por_sec['Valor orçado em 2023']*100
 investimento_por_sec.sort_values('Executado', ascending=False)
