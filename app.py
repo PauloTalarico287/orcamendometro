@@ -121,7 +121,7 @@ investimento_por_sub['Executado'] = investimento_por_sub['Valor Liquidado']/inve
 investimento_por_sub.sort_values('Executado', ascending=False)
 #investimento_por_sub.to_csv('Execução_Orçamento_Subprefeituras.csv')
 investimento_por_sub
-planilha = client.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
+planilha = gc.open_by_key("1Fwd76Zs_fyYWfJMhgROAHdvHLXYyt-uszcGtq5uHftk")
 guia = planilha.worksheet("Subprefeituras")
 #data_to_append = investimento_por_sub.values.tolist()
 #guia.update(data_to_append)
